@@ -1,0 +1,23 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { CharactersShellComponent } from './characters-shell/characters-shell.component';
+import { CharacterShellComponent } from './character-shell/character-shell.component';
+
+const routes: Routes = [
+  {
+    path:  'characters',
+    component: CharactersShellComponent,
+    children: [
+      { 
+        path: ':id', 
+        component: CharacterShellComponent 
+      },
+    ]
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class CharactersRoutingModule { }

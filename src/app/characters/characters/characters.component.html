@@ -1,0 +1,35 @@
+<div id="searchResults" class="table-responsive" *ngIf="results.items.length">
+  <table class="table table-striped table-bordered table-hover">
+      <thead>
+          <tr>
+              <th>&nbsp;</th>
+              <th>Name</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let character of results.items" (click)="view(character.id)" role="button">
+              <td>
+                <img [src]="character.imageUrl" alt="{{character.name}}">
+              </td>
+              <td>
+                {{ character.name | uppercase }}
+              </td>
+          </tr>
+      </tbody>
+  </table>
+  <div class="text-center" [hidden]="!(pagination.pageCount > 1)">
+      <ngb-pagination  #pagination
+        [maxSize]="10"
+        [rotate]="true"
+        [ellipses]="false"
+        [boundaryLinks]="true"
+        (pageChange)="changePage($event)"
+        [pageSize]="results.pageSize"
+        [collectionSize]="results.total">
+      </ngb-pagination>
+  </div>
+</div>
+
+<div class="alert alert-vinfo text-white" id="noSearchResults" *ngIf="!results.items.length">
+  Could not load characters
+</div>

@@ -1,0 +1,15 @@
+<div class="card card-primary">
+  <div class="card-header font-weight-bold">
+      {{pageTitle}}
+  </div>
+  <div class="card-body">
+      <app-characters
+        id="search"
+        [criteria] ="criteria$ | async"
+        [results]="results$ | async" 
+        (pageChanged)="goTo($event)"
+        (viewCharacter)="view($event)"
+      >
+      </app-characters>
+  </div>
+</div>
