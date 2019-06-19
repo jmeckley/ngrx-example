@@ -8,6 +8,7 @@ describe(`charactersSelectors`, () => {
     defaultState = {
       router: null,
       characters: {
+        currentCharacter: {id:1, name:'name'},
         searchCriteria: {pageIndex: 0, pageSize: 10},
         results: {items:[{id:1, name:'ironman'}, {id:2, name:'black widow'}], loading: false},
         errors: {}
@@ -29,6 +30,11 @@ describe(`charactersSelectors`, () => {
   it('should have two characters', () => {
     const result = fromCharacters.getCharactersSuccess(defaultState);
     expect(result.items.length).toBe(2);
+  });
+
+  it('should have the current character', () => {
+    const result = fromCharacters.viewCharacter(defaultState);
+    expect(result).toBe(defaultState.characters.currentCharacter);
   });
 
 });

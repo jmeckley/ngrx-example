@@ -12,7 +12,7 @@ export class CharactersComponent implements OnInit {
   @Input() results: IPagedResults<ICharacter>;
   @Input() criteria: ISearchCriteria;
   @Output() pageChanged = new EventEmitter<ISearchCriteria>();
-  @Output() viewCharacter = new EventEmitter<number>();
+  @Output() viewCharacter = new EventEmitter<ICharacter>();
 
   constructor() { }
 
@@ -28,8 +28,8 @@ export class CharactersComponent implements OnInit {
     this.pageChanged.emit({...this.criteria, pageIndex: page - 1});
   }
 
-  view(id: number) {
-    this.viewCharacter.emit(id);
+  view(charcater: ICharacter) {
+    this.viewCharacter.emit(charcater);
   }
 
 }

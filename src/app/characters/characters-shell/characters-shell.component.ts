@@ -29,14 +29,10 @@ export class CharactersShellComponent implements OnInit {
     this.criteria$ = this.store.pipe(select(fromCharacters.getCharacters));
   }
 
-  view(id: number) {
+  view(character: ICharacter) {
     alert('implement view character');
-    //this.store.dispatch(new actions.ClearCurrentpolicy());
-    //this.store.dispatch(new actions.ViewCharacter(id));
-  }
-
-  goTo(criteria: ISearchCriteria) {
-    this.store.dispatch(new actions.LoadCharacters(criteria));
+    //this.store.dispatch(new actions.ClearCurrentCharacter());
+    this.store.dispatch(new actions.ViewCharacter(character));
   }
 
   query(criteria: ISearchCriteria) {

@@ -3,6 +3,7 @@ import { IPagedResults } from '../../pagedResults';
 import { ICharacter, ISearchCriteria } from './character';
 
 export interface CharactersState {
+    currentCharacter?:ICharacter;
     searchCriteria: ISearchCriteria;
     results: IPagedResults<ICharacter>;
     errors: {
@@ -25,6 +26,11 @@ export function reducer(state = initialState, action: CharactersActions): Charac
     }
 
     switch (action.type) {
+        case CharactersActionTypes.ViewCharacter:
+            return {
+                ...state,
+                currentCharacter: action.character,
+            };
         case CharactersActionTypes.LoadCharacters:
             return {
                 ...state,

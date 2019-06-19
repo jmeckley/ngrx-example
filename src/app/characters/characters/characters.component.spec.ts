@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed, flush, fakeAsync } from '@angular/cor
 
 import { CharactersComponent } from './characters.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ICharacter } from '../state/character';
 
 describe('CharactersComponent', () => {
   let component: CharactersComponent;
@@ -39,9 +40,11 @@ describe('CharactersComponent', () => {
 
   describe('view', () =>{
     it('should emit character id', fakeAsync(() => {
-      component.viewCharacter.subscribe(actual => expect(actual).toEqual(1));
+      let character: ICharacter = {id:1, name:'the hero'};
+
+      component.viewCharacter.subscribe(actual => expect(actual).toEqual(character));
       
-      component.view(1);
+      component.view(character);
     }));
   });
 });

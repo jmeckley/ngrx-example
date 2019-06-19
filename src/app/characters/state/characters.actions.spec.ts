@@ -1,4 +1,4 @@
-import { CharactersActionTypes, LoadCharacters, LoadCharactersFail, LoadCharactersSuccess, ReloadCharacters } from './characters.actions';
+import { CharactersActionTypes, LoadCharacters, LoadCharactersFail, LoadCharactersSuccess, ReloadCharacters, ViewCharacter } from './characters.actions';
 
 describe('LoadCharacters', () => {
   it('should create an instance', () => {
@@ -24,6 +24,12 @@ describe('LoadCharactersSuccess', () => {
   });
 });
 
+describe('ViewCharacter', () => {
+  it('should create an instance', () => {
+    expect(new ViewCharacter({id:0, name: ''})).toBeTruthy();
+  });
+});
+
 describe('CharactersActionTypes', () => {
   it('should define Load', () => {
     expect(CharactersActionTypes.LoadCharacters).toBe('[Characters][Load] Load Characters');
@@ -39,5 +45,9 @@ describe('CharactersActionTypes', () => {
 
   it('should define Load Success', () => {
     expect(CharactersActionTypes.ReloadCharacters).toBe('[Characters][Load] Reload Characters');
+  });
+
+  it('should define View Character', () => {
+    expect(CharactersActionTypes.ViewCharacter).toBe('[Character][View] View Character');
   });
 });

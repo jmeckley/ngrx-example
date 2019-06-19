@@ -7,7 +7,7 @@
         id="search"
         [criteria] ="criteria$ | async"
         [results]="results$ | async" 
-        (pageChanged)="goTo($event)"
+        (pageChanged)="query($event)"
         (viewCharacter)="view($event)"
       >
       </app-characters>

@@ -1,6 +1,6 @@
 import { reducer, CharactersState } from './characters.reducers';
 import { ISearchCriteria, ICharacter } from './character';
-import { LoadCharacters, LoadCharactersSuccess, LoadCharactersFail } from './characters.actions';
+import { LoadCharacters, LoadCharactersSuccess, LoadCharactersFail, ViewCharacter } from './characters.actions';
 import { IPagedResults } from '../../pagedResults';
 
 describe('Character reducer', () => {
@@ -65,6 +65,20 @@ describe('Character reducer', () => {
       };
 
       const result = reducer(state, new LoadCharactersFail(error));
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('view', () => {
+    it('should return the character', () => {
+      const character:ICharacter = {id:1, name:'name'};
+      
+      const expected: CharactersState = {
+          ...state,
+          currentCharacter: character
+      };
+
+      const result = reducer(state, new ViewCharacter(character));
       expect(result).toEqual(expected);
     });
   });

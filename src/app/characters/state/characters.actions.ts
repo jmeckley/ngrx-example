@@ -7,6 +7,7 @@ export enum CharactersActionTypes {
   ReloadCharacters = '[Characters][Load] Reload Characters',
   LoadCharactersSuccess = '[Characters][Load] Load Characters Success',
   LoadCharactersFail = '[Characters][Load] Load Characters Failure',
+  ViewCharacter = '[Character][View] View Character',
 }
 
 export class LoadCharacters implements Action {
@@ -24,5 +25,9 @@ export class LoadCharactersFail implements Action {
   readonly type = CharactersActionTypes.LoadCharactersFail;
   constructor(public error: string) { }
 }
+export class ViewCharacter implements Action {
+  readonly type = CharactersActionTypes.ViewCharacter;
+  constructor(public character: ICharacter) { }
+}
 
-export type CharactersActions = LoadCharacters | ReloadCharacters | LoadCharactersSuccess | LoadCharactersFail;
+export type CharactersActions = LoadCharacters | ReloadCharacters | LoadCharactersSuccess | LoadCharactersFail | ViewCharacter;
