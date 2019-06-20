@@ -1,3 +1,6 @@
-<p>
-  character-shell works!
-</p>
+<div class="card-header font-weight-bold">
+  {{pageTitle}}
+</div>
+<div class="card-body">
+  <app-character [character]="character$ | async" [errorMessage]="errorMessage$ | async" ></app-character>
+</div>

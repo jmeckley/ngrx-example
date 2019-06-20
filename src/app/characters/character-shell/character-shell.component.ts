@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ICharacter } from '../state/character';
+import { Store, select } from '@ngrx/store';
+
+import * as fromCharacters from '../state';
 
 @Component({
   selector: 'app-character-shell',
@@ -7,9 +12,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CharacterShellComponent implements OnInit {
 
-  constructor() { }
+  pageTitle = 'Marvel Character';
+  character$: Observable<ICharacter>;
+  errorMessage$: Observable<string>;
+
+  constructor(private store: Store<fromCharacters.State>) {}
 
   ngOnInit() {
+    this.character$ = this.store.pipe(select(fromCharacters.getCharacterSuccess));
+    this.errorMessage$ = this.store.pipe(select(fromCharacters.getCharacterError));
   }
 
 }

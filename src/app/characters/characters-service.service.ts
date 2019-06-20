@@ -46,6 +46,7 @@ export class CharactersService {
     return {
       id: character.id,
       name: character.name,
+      description: character.description,
       imageUrl: `${thumbnail.path}.${thumbnail.extension}`
     };
   }

@@ -12,12 +12,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { CharactersComponent } from './characters/characters.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CharactersService } from './characters-service.service';
+import { CharacterComponent } from './character/character.component';
 
 @NgModule({
   declarations: [
     CharactersShellComponent, 
     CharacterShellComponent, 
-    CharactersComponent
+    CharactersComponent, CharacterComponent
   ],
   imports: [
     CommonModule,
