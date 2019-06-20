@@ -10,7 +10,8 @@ const routes: Routes = [
     children: [
       { 
         path: ':id', 
-        component: CharacterShellComponent 
+        component: CharacterShellComponent, 
+        canActivate: [CharacterExistsGuard]
       },
     ]
   }
