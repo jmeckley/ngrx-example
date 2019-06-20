@@ -12,9 +12,19 @@ export interface State extends fromRoot.AppState {
 
 const getCharactersState = createFeatureSelector<fromCharacters.CharactersState>('characters');
 
-export const viewCharacter = createSelector(
+export const getCharacter = createSelector(
+  getCharactersState,
+  state => state.currentCharacterId
+);
+
+export const getCharacterSuccess = createSelector(
   getCharactersState,
   state => state.currentCharacter
+);
+
+export const getCharacterError = createSelector(
+  getCharactersState,
+  state => state.errors.message
 );
 
 export const getCharacters = createSelector(

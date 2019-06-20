@@ -3,7 +3,8 @@ import { IPagedResults } from '../../pagedResults';
 import { ICharacter, ISearchCriteria } from './character';
 
 export interface CharactersState {
-    currentCharacter?:ICharacter;
+    currentCharacterId?: number;
+    currentCharacter?: ICharacter;
     searchCriteria: ISearchCriteria;
     results: IPagedResults<ICharacter>;
     errors: {
@@ -26,7 +27,18 @@ export function reducer(state = initialState, action: CharactersActions): Charac
     }
 
     switch (action.type) {
-        case CharactersActionTypes.ViewCharacter:
+        case CharactersActionTypes.ClearCurrentCharacter:
+            return {
+                ...state,
+                currentCharacterId: null,
+                currentCharacter: null,
+            };
+        case CharactersActionTypes.LoadCharacter:
+            return {
+                ...state,
+                currentCharacterId: action.characterId,
+            };
+        case CharactersActionTypes.LoadCharacterSuccess:
             return {
                 ...state,
                 currentCharacter: action.character,
@@ -41,12 +53,13 @@ export function reducer(state = initialState, action: CharactersActions): Charac
                 ...state,
                 results: action.characters,
             };
+        case CharactersActionTypes.LoadCharacterFail:
         case CharactersActionTypes.LoadCharactersFail:
             return {
                 ...state,
                 errors: {
-                ...state.errors,
-                message: action.error
+                    ...state.errors,
+                    message: action.error
                 }
             };
 

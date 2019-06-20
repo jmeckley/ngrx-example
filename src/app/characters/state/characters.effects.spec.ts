@@ -20,12 +20,12 @@ describe('CharactersEffects', () => {
   let sut: CharactersEffects;
 
   beforeEach(() => {
-    service = jasmine.createSpyObj<CharactersService>(['query']);
+    service = jasmine.createSpyObj<CharactersService>(['query', 'get']);
     router = jasmine.createSpyObj<Router>(['navigate']);
     state = {
-      searchCriteria: {pageIndex: 0, pageSize: 10},
-      results:{items:[], loading: false},
-      errors:{}
+      searchCriteria: null,
+      results: null,
+      errors: null
     };
 
     TestBed.configureTestingModule({
@@ -55,9 +55,15 @@ describe('CharactersEffects', () => {
   });
 
   describe(`loadSearchResults`, () => {
+
+    beforeEach(() => {
+      state.searchCriteria = {pageIndex: 0, pageSize: 10};
+    });
     
     describe(`Success`, () => {
         it('should return list of characters', () => {
+            state.results = {items:[], loading: false};
+
             const action = new CharacterActions.LoadCharacters(state.searchCriteria);
             const completion = new CharacterActions.LoadCharactersSuccess(state.results);
 
@@ -72,8 +78,10 @@ describe('CharactersEffects', () => {
 
     describe(`Fail`, () => {
       xit('should return error message', () => {
+          state.errors.message = 'error';
+
           const action = new CharacterActions.LoadCharacters(state.searchCriteria);
-          const completion = new CharacterActions.LoadCharactersFail(state.errors.message = 'error');
+          const completion = new CharacterActions.LoadCharactersFail(state.errors.message);
 
           actions$ = of(action);
           const response = cold('-a#', { a: state.results = null });
@@ -82,6 +90,58 @@ describe('CharactersEffects', () => {
 
           expect(sut.loadSearchResults$).toBeObservable(expected);
       });
+    });
+  });
+
+  describe(`getCharacter`, () => {
+
+    beforeEach(() => {
+      state.currentCharacterId = 1;
+    });
+    
+    describe(`Success`, () => {
+        it('should return character', () => {
+            state.currentCharacter = {id:1, name: 'name'};
+
+            const action = new CharacterActions.LoadCharacter(state.currentCharacterId);
+            const completion = new CharacterActions.LoadCharacterSuccess(state.currentCharacter);
+
+            actions$ = of(action);
+            const response = cold('-a|', { a: state.currentCharacter });
+            const expected = cold('-b|', { b: completion });
+            service.get.and.returnValue(response);
+
+            expect(sut.getCharacter$).toBeObservable(expected);
+        });
+    });
+
+    describe(`Fail`, () => {
+      xit('should return error message', () => {
+          state.errors.message = 'error'
+
+          const action = new CharacterActions.LoadCharacter(state.currentCharacterId);
+          const completion = new CharacterActions.LoadCharacterFail(state.errors.message);
+
+          actions$ = of(action);
+          const response = cold('-a#', { a: state.currentCharacter = null });
+          const expected = cold('-b|', { b: completion });
+          service.get.and.returnValue(expected);
+
+          expect(sut.getCharacter$).toBeObservable(expected);
+      });
+    });
+  });
+
+  describe('Navigate to Character', () => {
+    it('should navigate to the character route', () => { 
+        state.currentCharacterId = 1;
+
+        const action = new CharacterActions.NavigateToCharacterRoute(state.currentCharacterId);
+        
+        actions$ = of(action);
+        sut.navigateToCharacter$.subscribe();
+
+        expect(router.navigate).toHaveBeenCalledWith(['characters/1']);
     });
   });
 });

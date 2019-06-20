@@ -40,4 +40,15 @@ describe('CharactersService', () => {
     expect(req.request.method).toEqual('GET');
     req.flush(expected);
   });
+
+  it('get should return character', () => {
+    const marvelCharacter = {id:1, name: 'name', thumbnail: {path: 'image', extension: 'png'}};
+    const expected = {id:1, name: 'name', imageUrl: 'image.png'};
+
+    sut.get(1).subscribe(result => expect(result).toEqual(expected));
+
+    const req = httpTestingController.expectOne(`https://gateway.marvel.com:443/v1/public/characters/1?apikey=ebdee8e76ad36b82d00317c821623194`);
+    expect(req.request.method).toEqual('GET');
+    req.flush(marvelCharacter);
+  });
 });

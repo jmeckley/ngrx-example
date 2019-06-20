@@ -1,4 +1,4 @@
-import { CharactersActionTypes, LoadCharacters, LoadCharactersFail, LoadCharactersSuccess, ReloadCharacters, ViewCharacter } from './characters.actions';
+import { CharactersActionTypes, LoadCharacters, LoadCharactersFail, LoadCharactersSuccess, ReloadCharacters, LoadCharacter, LoadCharacterSuccess, LoadCharacterFail, NavigateToCharacterRoute, ClearCurrentCharacter } from './characters.actions';
 
 describe('LoadCharacters', () => {
   it('should create an instance', () => {
@@ -24,9 +24,33 @@ describe('LoadCharactersSuccess', () => {
   });
 });
 
-describe('ViewCharacter', () => {
+describe('LoadCharacter', () => {
   it('should create an instance', () => {
-    expect(new ViewCharacter({id:0, name: ''})).toBeTruthy();
+    expect(new LoadCharacter(1)).toBeTruthy();
+  });
+});
+
+describe('LoadCharacterSuccess', () => {
+  it('should create an instance', () => {
+    expect(new LoadCharacterSuccess({id: 1, name: 'name'})).toBeTruthy();
+  });
+});
+
+describe('LoadCharacterFail', () => {
+  it('should create an instance', () => {
+    expect(new LoadCharacterFail('error')).toBeTruthy();
+  });
+});
+
+describe('NavigateToCharacterRoute', () => {
+  it('should create an instance', () => {
+    expect(new NavigateToCharacterRoute(1)).toBeTruthy();
+  });
+});
+
+describe('ClearCurrentCharacter', () => {
+  it('should create an instance', () => {
+    expect(new ClearCurrentCharacter()).toBeTruthy();
   });
 });
 
@@ -47,7 +71,23 @@ describe('CharactersActionTypes', () => {
     expect(CharactersActionTypes.ReloadCharacters).toBe('[Characters][Load] Reload Characters');
   });
 
-  it('should define View Character', () => {
-    expect(CharactersActionTypes.ViewCharacter).toBe('[Character][View] View Character');
+  it('should define Load Character', () => {
+    expect(CharactersActionTypes.LoadCharacter).toBe('[Character][Load] Load Character');
+  });
+
+  it('should define Load Character Success', () => {
+    expect(CharactersActionTypes.LoadCharacterSuccess).toBe('[Character][Load] Load Character Success');
+  });
+
+  it('should define Load Character Fail', () => {
+    expect(CharactersActionTypes.LoadCharacterFail).toBe('[Character][Load] Load Character Failure');
+  });
+
+  it('should define Navigate to Character Route', () => {
+    expect(CharactersActionTypes.NavigateToCharacterRoute).toBe('[Character][Navigate] To Character');
+  });
+
+  it('should define Clear Current Character', () => {
+    expect(CharactersActionTypes.ClearCurrentCharacter).toBe('[Character][Load] Clear Character');
   });
 });

@@ -18,7 +18,17 @@ export class CharactersService {
   query(criteria: ISearchCriteria): Observable<IPagedResults<ICharacter>> {
     const url = `https://gateway.marvel.com:443/v1/public/characters?orderBy=name&limit=${criteria.pageSize}&offset=${criteria.pageIndex*criteria.pageSize}&apikey=${this.apiKey}`;
     
-    return this.http.get<IMarvelResponse>(url).pipe(map((response: IMarvelResponse): IMarvelResults => response.data)).pipe(map(this.toPageOfCharacters));
+    return this._get.call(this, url).pipe(map(this.toPageOfCharacters));
+  }
+
+  get(id: number): Observable<ICharacter> {
+    const url = `https://gateway.marvel.com:443/v1/public/characters/${id}?apikey=${this.apiKey}`;
+    
+    return this._get.call(this, url).pipe(map(this.toCharacter));
+  }
+
+  private _get(url: string): Observable<IMarvelResults | IMarvelCharacter> {
+    return this.http.get<IMarvelResponse>(url).pipe(map((response: IMarvelResponse) => response.data));
   }
 
   private toPageOfCharacters(data: IMarvelResults): IPagedResults<ICharacter> {
@@ -118,6 +128,6 @@ interface IMarvelResponse {
   copyright: string,
   attributionText: string,
   attributionHTML: string,
-  data: IMarvelResults,
+  data: IMarvelResults | IMarvelCharacter,
   etag: string
 }

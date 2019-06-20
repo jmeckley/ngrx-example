@@ -30,9 +30,8 @@ export class CharactersShellComponent implements OnInit {
   }
 
   view(character: ICharacter) {
-    alert('implement view character');
-    //this.store.dispatch(new actions.ClearCurrentCharacter());
-    this.store.dispatch(new actions.ViewCharacter(character));
+    this.store.dispatch(new actions.ClearCurrentCharacter());
+    this.store.dispatch(new actions.NavigateToCharacterRoute(character.id));
   }
 
   query(criteria: ISearchCriteria) {

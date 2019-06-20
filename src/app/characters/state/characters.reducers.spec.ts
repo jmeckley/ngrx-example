@@ -1,6 +1,6 @@
 import { reducer, CharactersState } from './characters.reducers';
 import { ISearchCriteria, ICharacter } from './character';
-import { LoadCharacters, LoadCharactersSuccess, LoadCharactersFail, ViewCharacter } from './characters.actions';
+import { LoadCharacters, LoadCharactersSuccess, LoadCharactersFail, LoadCharacter, LoadCharacterSuccess, LoadCharacterFail, ClearCurrentCharacter } from './characters.actions';
 import { IPagedResults } from '../../pagedResults';
 
 describe('Character reducer', () => {
@@ -19,7 +19,7 @@ describe('Character reducer', () => {
     expect(reducer).toBeTruthy();
   });
   
-  describe('load', () => {
+  describe('load characters', () => {
 
     it('should return search criteria', () => {
       const criteria: ISearchCriteria = {
@@ -38,7 +38,7 @@ describe('Character reducer', () => {
     
   });
 
-  describe('load success', () => {
+  describe('load characters success', () => {
     it('should return search results', () => {
       const results: IPagedResults<ICharacter> = {
         items:[{id:1, name:'ironman'}],
@@ -55,7 +55,7 @@ describe('Character reducer', () => {
     });
   });
 
-  describe('load fail', () => {
+  describe('load characters fail', () => {
     it('should return error message', () => {
       const error:string = 'error';
       
@@ -69,16 +69,65 @@ describe('Character reducer', () => {
     });
   });
 
-  describe('view', () => {
-    it('should return the character', () => {
-      const character:ICharacter = {id:1, name:'name'};
+  describe('load character', () => {
+
+    it('should return the character id', () => {
+      const id = 1;
+  
+      const expected: CharactersState = {
+          ...state,
+          currentCharacterId: id,
+      };
+  
+      const result = reducer(state, new LoadCharacter(id));
+      expect(result).toEqual(expected);
+    });
+    
+  });
+
+  describe('load character success', () => {
+    it('should return the character details', () => {
+      const character: ICharacter = {
+        id:1, 
+        name:'ironman'
+      };
       
       const expected: CharactersState = {
           ...state,
           currentCharacter: character
       };
 
-      const result = reducer(state, new ViewCharacter(character));
+      const result = reducer(state, new LoadCharacterSuccess(character));
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('load character fail', () => {
+    it('should return error message', () => {
+      const error:string = 'error';
+      
+      const expected: CharactersState = {
+          ...state,
+          errors: {message: error}
+      };
+
+      const result = reducer(state, new LoadCharacterFail(error));
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('clear character', () => {
+    it('should set character and character id to null', () => {
+      state.currentCharacter = {id:1, name:'name'};
+      state.currentCharacterId = 1;
+      
+      const expected: CharactersState = {
+          ...state,
+          currentCharacter: null,
+          currentCharacterId: null
+      };
+
+      const result = reducer(state, new ClearCurrentCharacter());
       expect(result).toEqual(expected);
     });
   });
