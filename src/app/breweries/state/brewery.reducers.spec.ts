@@ -19,7 +19,7 @@ describe('Brewery reducer', () => {
     expect(reducer).toBeTruthy();
   });
   
-  describe('load brewerys', () => {
+  describe('load breweries', () => {
 
     it('should return search criteria', () => {
       const criteria: ISearchCriteria = {
@@ -38,7 +38,7 @@ describe('Brewery reducer', () => {
     
   });
 
-  describe('load brewerys success', () => {
+  describe('load breweries success', () => {
     it('should return search results', () => {
       const results: IPagedResults<IBrewery> = {
         items:[new Brewery()],
@@ -55,7 +55,7 @@ describe('Brewery reducer', () => {
     });
   });
 
-  describe('load brewerys fail', () => {
+  describe('load breweries fail', () => {
     it('should return error message', () => {
       const error:string = 'error';
       

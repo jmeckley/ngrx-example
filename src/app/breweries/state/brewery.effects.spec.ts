@@ -61,7 +61,7 @@ describe('BreweriesEffects', () => {
     });
     
     describe(`Success`, () => {
-        it('should return list of brewerys', () => {
+        it('should return list of breweries', () => {
             state.results = {items:[], loading: false};
 
             const action = new BreweryActions.LoadBreweries(state.searchCriteria);
@@ -141,7 +141,7 @@ describe('BreweriesEffects', () => {
         actions$ = of(action);
         sut.navigateToBrewery$.subscribe();
 
-        expect(router.navigate).toHaveBeenCalledWith(['brewerys/1']);
+        expect(router.navigate).toHaveBeenCalledWith(['breweries/1']);
     });
   });
 });

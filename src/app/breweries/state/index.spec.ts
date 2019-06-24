@@ -1,7 +1,7 @@
 import * as fromBrewerys from './index';
 import { Brewery } from '..';
 
-describe(`brewerysSelectors`, () => {
+describe(`brewerySelectors`, () => {
 
   let defaultState: fromBrewerys.State;
   
@@ -30,7 +30,7 @@ describe(`brewerysSelectors`, () => {
       expect(result).not.toBeDefined();
     });
 
-    it('success should have two brewerys', () => {
+    it('success should have two breweries', () => {
       const result = fromBrewerys.getBreweriesSuccess(defaultState);
       expect(result.items.length).toBe(2);
     });
@@ -47,7 +47,7 @@ describe(`brewerysSelectors`, () => {
       expect(result).not.toBeDefined();
     });
 
-    it('success should have two brewerys', () => {
+    it('success should have two breweries', () => {
       const result = fromBrewerys.getBrewerySuccess(defaultState);
       expect(result).toBe(defaultState.breweries.currentBrewery);
     });

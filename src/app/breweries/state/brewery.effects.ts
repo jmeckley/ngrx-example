@@ -49,7 +49,7 @@ export class BreweryEffects {
     navigateToBrewery$ = this.actions$.pipe(
         ofType(breweryActions.BreweryActionTypes.NavigateToBreweryRoute),
         map((action: breweryActions.NavigateToBreweryRoute) => action.breweryId),
-        tap(id => this.router.navigate([`brewerys/${id}`]))
+        tap(id => this.router.navigate([`breweries/${id}`]))
     );
 
     private getBrewery(action: breweryActions.LoadBrewery): Observable<breweryActions.LoadBrewerySuccess> {

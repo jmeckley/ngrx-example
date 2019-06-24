@@ -51,7 +51,7 @@ export function reducer(state = initialState, action: BreweriesActions): Breweri
         case BreweryActionTypes.LoadBreweriesSuccess:
             return {
                 ...state,
-                results: action.brewerys,
+                results: action.breweries,
             };
         case BreweryActionTypes.LoadBreweryFail:
         case BreweryActionTypes.LoadBreweriesFail:

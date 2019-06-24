@@ -23,7 +23,7 @@ export class ReloadBreweries implements Action {
 }
 export class LoadBreweriesSuccess implements Action {
   readonly type = BreweryActionTypes.LoadBreweriesSuccess;
-  constructor(public brewerys: IPagedResults<IBrewery>) { }
+  constructor(public breweries: IPagedResults<IBrewery>) { }
 }
 export class LoadBreweriesFail implements Action {
   readonly type = BreweryActionTypes.LoadBreweriesFail;
