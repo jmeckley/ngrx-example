@@ -14,8 +14,8 @@ export class CharacterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    if (this.character === undefined) {
-      this.character = { id:null, name:null };
+    if (!this.character) {
+      this.character = { id:null, name:null, imageUrl: null };
     }
   }
 

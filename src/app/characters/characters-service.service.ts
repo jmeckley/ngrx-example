@@ -47,12 +47,12 @@ export class CharactersService {
       id: character.id,
       name: character.name,
       description: character.description,
-      imageUrl: `${thumbnail.path}.${thumbnail.extension}`
+      imageUrl: thumbnail ? `${thumbnail.path}.${thumbnail.extension}` : null
     };
   }
 }
 
-interface IMarvelResults {
+export interface IMarvelResults {
   offset: number,
   limit: number,
   total: number,
@@ -60,7 +60,7 @@ interface IMarvelResults {
   results: Array<IMarvelCharacter> 
 }
 
-interface IMarvelCharacter {
+export interface IMarvelCharacter {
   id: number,
   name: string,
   description: string,
@@ -123,7 +123,7 @@ interface IMarvelCharacter {
   }
 }
 
-interface IMarvelResponse {
+export interface IMarvelResponse {
   code: number,
   status: string,
   copyright: string,

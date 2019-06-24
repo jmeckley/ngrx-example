@@ -10,6 +10,7 @@ describe('Character reducer', () => {
   beforeEach(() => {
     state = {
       errors: {},
+      current: {id: null, item: null, loaded: false},
       searchCriteria: {pageIndex: 0, pageSize: 10},
       results: {items: [], loading: false}
     };
@@ -76,7 +77,10 @@ describe('Character reducer', () => {
   
       const expected: CharactersState = {
           ...state,
-          currentCharacterId: id,
+          current : {
+            ...state.current,
+            id: id
+          }
       };
   
       const result = reducer(state, new LoadCharacter(id));
@@ -94,7 +98,11 @@ describe('Character reducer', () => {
       
       const expected: CharactersState = {
           ...state,
-          currentCharacter: character
+          current : {
+            ...state.current,
+            item: character,
+            loaded: true
+          }
       };
 
       const result = reducer(state, new LoadCharacterSuccess(character));
@@ -118,13 +126,13 @@ describe('Character reducer', () => {
 
   describe('clear character', () => {
     it('should set character and character id to null', () => {
-      state.currentCharacter = {id:1, name:'name'};
-      state.currentCharacterId = 1;
+      state.current.item = {id:1, name:'name'};
+      state.current.id = 1;
+      state.current.loaded = true;
       
       const expected: CharactersState = {
           ...state,
-          currentCharacter: null,
-          currentCharacterId: null
+          current: {id: null, item: null, loaded: false}
       };
 
       const result = reducer(state, new ClearCurrentCharacter());

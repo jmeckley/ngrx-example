@@ -1,0 +1,6 @@
+<div class="card-header font-weight-bold">
+  {{pageTitle}}
+</div>
+<div class="card-body">
+  <app-brewery [brewery]="brewery$ | async" [errorMessage]="errorMessage$ | async" ></app-brewery>
+</div>

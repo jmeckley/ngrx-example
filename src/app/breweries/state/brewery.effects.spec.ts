@@ -3,27 +3,27 @@ import { provideMockActions } from '@ngrx/effects/testing';
 
 import { cold } from 'jasmine-marbles';
 
-import * as CharacterActions from './characters.actions';
-import { CharactersEffects } from './characters.effects';
-import { CharactersService } from '../characters-service.service';
+import * as BreweryActions from './brewery.actions';
+import { BreweryEffects } from './brewery.effects';
+import { BreweriesService } from '../breweries.service';
 import { Router } from '@angular/router';
-import { StoreModule, Store } from '@ngrx/store';
-import { reducer, CharactersState } from './characters.reducers';
+import { StoreModule } from '@ngrx/store';
+import { reducer, BreweriesState } from './brewery.reducers';
 import { Observable, of } from 'rxjs';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { Brewery } from '..';
 
-describe('CharactersEffects', () => {
+describe('BreweriesEffects', () => {
   let actions$: Observable<any>;
-  let state: CharactersState;
-  let service: jasmine.SpyObj<CharactersService>;
+  let state: BreweriesState;
+  let service: jasmine.SpyObj<BreweriesService>;
   let router: jasmine.SpyObj<Router>;
-  let sut: CharactersEffects;
+  let sut: BreweryEffects;
 
   beforeEach(() => {
-    service = jasmine.createSpyObj<CharactersService>(['query', 'get']);
+    service = jasmine.createSpyObj<BreweriesService>(['query', 'get']);
     router = jasmine.createSpyObj<Router>(['navigate']);
     state = {
-      current:{id: null, item: null, loaded: false},
+      current: {id: null, item: null, loaded: false},
       searchCriteria: null,
       results: null,
       errors: null
@@ -33,22 +33,22 @@ describe('CharactersEffects', () => {
       providers: [
         provideMockActions(() => actions$),
         {
-          provide: CharactersService,
+          provide: BreweriesService,
           useValue: service
         },
         {
           provide: Router,
           useValue: router
         },
-        CharactersEffects
+        BreweryEffects
       ],
       imports: [
           StoreModule.forRoot({}),
-          StoreModule.forFeature('characters', reducer)
+          StoreModule.forFeature('breweries', reducer)
       ]
     });
     
-    sut = TestBed.get(CharactersEffects);
+    sut = TestBed.get(BreweryEffects);
   });
 
   it('should create an instance', () => {
@@ -62,11 +62,11 @@ describe('CharactersEffects', () => {
     });
     
     describe(`Success`, () => {
-        it('should return list of characters', () => {
+        it('should return list of breweries', () => {
             state.results = {items:[], loading: false};
 
-            const action = new CharacterActions.LoadCharacters(state.searchCriteria);
-            const completion = new CharacterActions.LoadCharactersSuccess(state.results);
+            const action = new BreweryActions.LoadBreweries(state.searchCriteria);
+            const completion = new BreweryActions.LoadBreweriesSuccess(state.results);
 
             actions$ = of(action);
             const response = cold('-a|', { a: state.results });
@@ -81,8 +81,8 @@ describe('CharactersEffects', () => {
       xit('should return error message', () => {
           state.errors.message = 'error';
 
-          const action = new CharacterActions.LoadCharacters(state.searchCriteria);
-          const completion = new CharacterActions.LoadCharactersFail(state.errors.message);
+          const action = new BreweryActions.LoadBreweries(state.searchCriteria);
+          const completion = new BreweryActions.LoadBreweriesFail(state.errors.message);
 
           actions$ = of(action);
           const response = cold('-a#', { a: state.results = null });
@@ -94,25 +94,25 @@ describe('CharactersEffects', () => {
     });
   });
 
-  describe(`getCharacter`, () => {
+  describe(`getBrewery`, () => {
 
     beforeEach(() => {
       state.current.id = 1;
     });
     
     describe(`Success`, () => {
-        it('should return character', () => {
-            state.current.item = {id:1, name: 'name'};
+        it('should return brewery', () => {
+            state.current.item = new Brewery();
 
-            const action = new CharacterActions.LoadCharacter(state.current.id);
-            const completion = new CharacterActions.LoadCharacterSuccess(state.current.item);
+            const action = new BreweryActions.LoadBrewery(state.current.id);
+            const completion = new BreweryActions.LoadBrewerySuccess(state.current.item);
 
             actions$ = of(action);
             const response = cold('-a|', { a: state.current.item });
             const expected = cold('-b|', { b: completion });
             service.get.and.returnValue(response);
 
-            expect(sut.getCharacter$).toBeObservable(expected);
+            expect(sut.getBrewery$).toBeObservable(expected);
         });
     });
 
@@ -120,29 +120,29 @@ describe('CharactersEffects', () => {
       xit('should return error message', () => {
           state.errors.message = 'error'
 
-          const action = new CharacterActions.LoadCharacter(state.current.id);
-          const completion = new CharacterActions.LoadCharacterFail(state.errors.message);
+          const action = new BreweryActions.LoadBrewery(state.current.id);
+          const completion = new BreweryActions.LoadBreweryFail(state.errors.message);
 
           actions$ = of(action);
           const response = cold('-a#', { a: state.current.item = null });
           const expected = cold('-b|', { b: completion });
           service.get.and.returnValue(expected);
 
-          expect(sut.getCharacter$).toBeObservable(expected);
+          expect(sut.getBrewery$).toBeObservable(expected);
       });
     });
   });
 
-  describe('Navigate to Character', () => {
-    it('should navigate to the character route', () => { 
+  describe('Navigate to Brewery', () => {
+    it('should navigate to the brewery route', () => { 
         state.current.id = 1;
 
-        const action = new CharacterActions.NavigateToCharacterRoute(state.current.id);
+        const action = new BreweryActions.NavigateToBreweryRoute(state.current.id);
         
         actions$ = of(action);
-        sut.navigateToCharacter$.subscribe();
+        sut.navigateToBrewery$.subscribe();
 
-        expect(router.navigate).toHaveBeenCalledWith(['characters/1']);
+        expect(router.navigate).toHaveBeenCalledWith(['breweries/1']);
     });
   });
 });

@@ -5,3 +5,9 @@ export interface IPagedResults<T> {
     items: Array<T>;
     loading: boolean;
 }
+
+export interface ICurrent<T> {
+    id: number;
+    item: T;
+    loaded: boolean;
+}

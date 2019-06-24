@@ -2,17 +2,13 @@
   <table class="table table-striped table-bordered table-hover">
       <thead>
           <tr>
-              <th>&nbsp;</th>
               <th>Name</th>
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="let character of results.items" (click)="view(character)" role="button">
+          <tr *ngFor="let brewery of results.items" (click)="view(brewery)" role="button">
               <td>
-                <img [src]="character.imageUrl" alt="{{character.name}}">
-              </td>
-              <td>
-                {{ character.name | uppercase }}
+                {{ brewery.name | uppercase }}
               </td>
           </tr>
       </tbody>
@@ -31,5 +27,5 @@
 </div>
 
 <div class="alert alert-vinfo text-white" id="noSearchResults" *ngIf="!results.items.length">
-  Could not load characters
+  Could not load breweries
 </div>

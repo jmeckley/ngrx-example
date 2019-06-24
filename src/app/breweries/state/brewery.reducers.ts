@@ -1,33 +1,30 @@
-import { CharactersActions, CharactersActionTypes } from './characters.actions';
+import { BreweriesActions, BreweryActionTypes } from './brewery.actions';
 import { IPagedResults, ICurrent } from '../../pagedResults';
-import { ICharacter, ISearchCriteria } from './character';
+import { IBrewery, ISearchCriteria, Brewery } from '..';
 
-export interface CharactersState {
-    current: ICurrent<ICharacter>;
+export interface BreweriesState {
     searchCriteria: ISearchCriteria;
-    results: IPagedResults<ICharacter>;
+    results: IPagedResults<IBrewery>;
+    current: ICurrent<Brewery>;
     errors: {
       message?: string;
     };
   }
 
-const initialState: CharactersState = {
-    current: {id: null, item: null, loaded: false},
+const initialState: BreweriesState = {
     searchCriteria: {pageIndex: 0, pageSize: 10},
-    results: {
-        items: [],
-        loading: false,
-    },
+    results: {items: [], loading: false},
+    current: {item: null, id: null, loaded: false},
     errors: {}
 }
 
-export function reducer(state = initialState, action: CharactersActions): CharactersState {
+export function reducer(state = initialState, action: BreweriesActions): BreweriesState {
     if (!action) {
         return state;
     }
 
     switch (action.type) {
-        case CharactersActionTypes.ClearCurrentCharacter:
+        case BreweryActionTypes.ClearCurrentBrewery:
             return {
                 ...state,
                 current: {
@@ -36,37 +33,36 @@ export function reducer(state = initialState, action: CharactersActions): Charac
                     loaded: false
                 }
             };
-        case CharactersActionTypes.LoadCharacter:
+        case BreweryActionTypes.LoadBrewery:
+            
             return {
                 ...state,
                 current: {
                     ...state.current,
-                    id: action.characterId,
-                    item: null,
-                    loaded: false
+                    id: action.breweryId
                 }
             };
-        case CharactersActionTypes.LoadCharacterSuccess:
+        case BreweryActionTypes.LoadBrewerySuccess:
             return {
                 ...state,
                 current: {
                     ...state.current,
-                    item: action.character,
+                    item: action.brewery,
                     loaded: true
                 }
             };
-        case CharactersActionTypes.LoadCharacters:
+        case BreweryActionTypes.LoadBreweries:
             return {
                 ...state,
                 searchCriteria: action.payload,
             };
-        case CharactersActionTypes.LoadCharactersSuccess:
+        case BreweryActionTypes.LoadBreweriesSuccess:
             return {
                 ...state,
-                results: action.characters,
+                results: action.breweries,
             };
-        case CharactersActionTypes.LoadCharacterFail:
-        case CharactersActionTypes.LoadCharactersFail:
+        case BreweryActionTypes.LoadBreweryFail:
+        case BreweryActionTypes.LoadBreweriesFail:
             return {
                 ...state,
                 errors: {

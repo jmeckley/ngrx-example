@@ -1,16 +1,16 @@
-import { CharacterExistsGuard } from './character-exists.guard';
+import { BreweryExistsGuard } from './brewery-exists.guard';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { cold } from 'jasmine-marbles';
-import { CharactersState } from './state/characters.reducers';
 import { Store, MemoizedSelector } from '@ngrx/store';
-import { State, getCharacterSuccess } from './state';
+import { Brewery, IBrewery } from '.';
+import { BreweriesState } from './state/brewery.reducers';
+import { State, getBrewerySuccess } from './state';
 import { ICurrent } from '../pagedResults';
-import { ICharacter } from './state/character';
 
-describe('CharacterExistsGuard', () => {
-  let sut: CharacterExistsGuard;
+describe('BreweryExistsGuard', () => {
+  let sut: BreweryExistsGuard;
   let route: ActivatedRouteSnapshot;
   let store: MockStore<State>;
 
@@ -19,16 +19,16 @@ describe('CharacterExistsGuard', () => {
       providers: [
         provideMockStore({
           initialState: {
-            characters: {
+            breweries: {
               current: {
-                id: null, 
+                id: null,
                 item: null, 
                 loaded: false
-              },
+              }
             }
           }
         }),
-        CharacterExistsGuard
+        BreweryExistsGuard
       ]
     });
 
@@ -37,7 +37,7 @@ describe('CharacterExistsGuard', () => {
     route = new ActivatedRouteSnapshot();
     route.params = {id: 1};
 
-    sut = TestBed.get(CharacterExistsGuard);
+    sut = TestBed.get(BreweryExistsGuard);
   });
 
   it('should create an instance', () => {
@@ -45,26 +45,24 @@ describe('CharacterExistsGuard', () => {
   });
 
   describe('canActivate', () => {
-    
-    let current: ICurrent<ICharacter>;
-    let selector: MemoizedSelector<object, ICurrent<ICharacter>>;
+    let state: BreweriesState;
+    let current: ICurrent<IBrewery>;
+    let selector: MemoizedSelector<object, ICurrent<IBrewery>>;
 
     beforeEach(() => {
       current = {id: null, item: null, loaded: false};
+      state = {
+        current: current,
+        results: null,
+        searchCriteria: null,
+        errors:{},
+      };
 
-      store.setState({
-        characters: {
-          current: current,
-          results: null,
-          searchCriteria: null,
-          errors:{},
-        }
-      });
-
-      selector = store.overrideSelector(getCharacterSuccess, current);
+      store.setState({breweries: state});
+      selector = store.overrideSelector(getBrewerySuccess, current);
     });
 
-    it('when character is not loaded returns false', () => {
+    it('when brewery is not loaded returns false', () => {
       const expected = cold('(a|)', { a: false });
 
       selector.setResult(current);
@@ -72,17 +70,17 @@ describe('CharacterExistsGuard', () => {
       expect(sut.canActivate(route)).toBeObservable(expected);
     });
 
-    it('when character is loaded returns true', () => {
+    it('when brewery is loaded returns true', () => {
       const expected = cold('(a|)', { a: true });
 
       current.loaded = true;
       selector.setResult(current);
-   
+      
       expect(sut.canActivate(route)).toBeObservable(expected);
     });
 
     xit('when there is an exception returns false', () => {
-      const expected = cold('(a#)', { a: false });
+      const expected = cold('(a|)', { a: false });
    
       expect(sut.canActivate(route)).toBeObservable(expected);
     });

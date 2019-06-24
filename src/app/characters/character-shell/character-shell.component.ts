@@ -4,6 +4,7 @@ import { ICharacter } from '../state/character';
 import { Store, select } from '@ngrx/store';
 
 import * as fromCharacters from '../state';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-character-shell',
@@ -19,7 +20,7 @@ export class CharacterShellComponent implements OnInit {
   constructor(private store: Store<fromCharacters.State>) {}
 
   ngOnInit() {
-    this.character$ = this.store.pipe(select(fromCharacters.getCharacterSuccess));
+    this.character$ = this.store.pipe(select(fromCharacters.getCharacterSuccess)).pipe(map(_ => _.item));
     this.errorMessage$ = this.store.pipe(select(fromCharacters.getCharacterError));
   }
 
