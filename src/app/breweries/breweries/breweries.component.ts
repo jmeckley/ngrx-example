@@ -17,8 +17,6 @@ export class BreweriesComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    window.scrollTo(0, 0);
-
     if (this.results === undefined) {
       this.results = { items: [], loading: false };
     }

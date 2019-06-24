@@ -7,7 +7,7 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="let character of results.items" (click)="view(character.id)" role="button">
+          <tr *ngFor="let character of results.items" (click)="view(character)" role="button">
               <td>
                 <img [src]="character.imageUrl" alt="{{character.name}}">
               </td>

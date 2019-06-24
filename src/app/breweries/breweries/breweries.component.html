@@ -6,7 +6,7 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="let brewery of results.items" (click)="view(brewery.id)" role="button">
+          <tr *ngFor="let brewery of results.items" (click)="view(brewery)" role="button">
               <td>
                 {{ brewery.name | uppercase }}
               </td>
