@@ -14,10 +14,18 @@ import { CharactersModule } from './characters/characters.module';
 import { CharactersRoutingModule } from './characters/characters-routing.module';
 import { reducers } from './state/app.reducer';
 import { environment } from 'src/environments/environment';
+import { BreweriesShellComponent } from './breweries/breweries-shell/breweries-shell.component';
+import { BreweriesComponent } from './breweries/breweries/breweries.component';
+import { BreweryComponent } from './breweries/brewery/brewery.component';
+import { BreweryShellComponent } from './breweries/brewery-shell/brewery-shell.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BreweriesShellComponent,
+    BreweriesComponent,
+    BreweryComponent,
+    BreweryShellComponent
   ],
   imports: [
     BrowserModule,
