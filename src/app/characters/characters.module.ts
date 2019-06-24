@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { StoreModule } from '@ngrx/store';
@@ -11,7 +11,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
 import { CharactersComponent } from './characters/characters.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CharactersService } from './characters-service.service';
 import { CharacterComponent } from './character/character.component';
 
 @NgModule({
