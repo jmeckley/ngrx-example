@@ -1,20 +1,31 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { StoreModule } from '@ngrx/store';
+import { reducer } from '../state/brewery.reducers';
+import { BreweriesShellComponent } from '../breweries-shell/breweries-shell.component';
 import { BreweriesComponent } from './breweries.component';
 
-describe('BreweriesComponent', () => {
-  let component: BreweriesComponent;
-  let fixture: ComponentFixture<BreweriesComponent>;
+describe('BreweriesShellComponent', () => {
+  let component: BreweriesShellComponent;
+  let fixture: ComponentFixture<BreweriesShellComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BreweriesComponent ]
+        declarations: [ 
+            BreweriesShellComponent,
+            BreweriesComponent,
+        ],
+        imports: [
+          NgbModule,
+          StoreModule.forRoot({}),
+          StoreModule.forFeature('breweries', reducer)
+        ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BreweriesComponent);
+    fixture = TestBed.createComponent(BreweriesShellComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
