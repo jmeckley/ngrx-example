@@ -13,7 +13,7 @@ export class BreweriesService {
   constructor(private http: HttpClient){ }
 
   query(criteria: ISearchCriteria): Observable<IPagedResults<IBrewery>> {
-    const url = `https://api.openbrewerydb.org/breweries?sort=+name&page=${criteria.pageIndex+1}&per_page=${criteria.pageSize}`;
+    const url = `https://api.openbrewerydb.org/breweries?sort=name&page=${criteria.pageIndex+1}&per_page=${criteria.pageSize}`;
     
     return this.http.get<Array<IBrewery>>(url).pipe(map(data => { 
       return {

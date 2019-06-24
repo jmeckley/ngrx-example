@@ -13,15 +13,16 @@
           </tr>
       </tbody>
   </table>
-  <div class="text-center" [hidden]="!(pagination.pageCount > 1)">
-      <ngb-pagination  #pagination
+  <div class="text-center" [hidden]="pagination.pageCount <= 1">
+      <ngb-pagination 
+        #pagination
         [maxSize]="10"
         [rotate]="true"
         [ellipses]="false"
         [boundaryLinks]="true"
         (pageChange)="changePage($event)"
         [pageSize]="results.pageSize"
-        [collectionSize]="results.total">
+        [collectionSize]="results.totalItems">
       </ngb-pagination>
   </div>
 </div>

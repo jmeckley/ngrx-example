@@ -40,7 +40,7 @@ describe('BreweriesService', () => {
 
     sut.query({pageIndex: 0, pageSize:10}).subscribe(result => expect(result).toEqual(expected));
 
-    const req = httpTestingController.expectOne(`https://api.openbrewerydb.org/breweries?sort=+name&page=1&per_page=10`);
+    const req = httpTestingController.expectOne(`https://api.openbrewerydb.org/breweries?sort=name&page=1&per_page=10`);
     expect(req.request.method).toEqual('GET');
     req.flush(breweries);
   });
