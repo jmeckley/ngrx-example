@@ -14,7 +14,7 @@ export class BreweryComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    if (this.brewery === undefined) {
+    if (!this.brewery) {
       this.brewery = new Brewery();
     }
   }

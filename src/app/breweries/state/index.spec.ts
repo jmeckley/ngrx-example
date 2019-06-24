@@ -7,10 +7,8 @@ describe(`brewerySelectors`, () => {
   
   beforeEach(() => {
     defaultState = {
-      router: null,
       breweries: {
-        currentBreweryId: 100,
-        currentBrewery: new Brewery(),
+        current: {id: 100, item: new Brewery(), loaded: true},
         searchCriteria: {pageIndex: 0, pageSize: 10},
         results: {items:[new Brewery(), new Brewery()], loading: false},
         errors: {}
@@ -18,7 +16,7 @@ describe(`brewerySelectors`, () => {
     };
   });
 
-  describe('Get Brewerys', () => {
+  describe('Get Breweries', () => {
     it('should have search criteria defined', () => {
       const result = fromBrewerys.getBreweries(defaultState);
       expect(result.pageIndex).toBe(0);
@@ -37,19 +35,19 @@ describe(`brewerySelectors`, () => {
   });
 
   describe('Get Brewery', () => {
-    it('should have search criteria defined', () => {
+    it('should set current brewery id', () => {
       const result = fromBrewerys.getBrewery(defaultState);
-      expect(result).toBe(defaultState.breweries.currentBreweryId);
+      expect(result).toBe(defaultState.breweries.current.id);
     });
 
-    it('error should not have errors', () => {
+    it('error should have error message', () => {
       const result = fromBrewerys.getBreweryError(defaultState);
       expect(result).not.toBeDefined();
     });
 
-    it('success should have two breweries', () => {
+    it('success should have current brewery', () => {
       const result = fromBrewerys.getBrewerySuccess(defaultState);
-      expect(result).toBe(defaultState.breweries.currentBrewery);
+      expect(result).toBe(defaultState.breweries.current);
     });
   });
 

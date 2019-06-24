@@ -4,27 +4,30 @@ import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { cold } from 'jasmine-marbles';
 import { Store, MemoizedSelector } from '@ngrx/store';
+import { Brewery, IBrewery } from '.';
 import { BreweriesState } from './state/brewery.reducers';
-import { IBrewery, Brewery } from '.';
+import { State, getBrewerySuccess } from './state';
+import { ICurrent } from '../pagedResults';
 
 describe('BreweryExistsGuard', () => {
   let sut: BreweryExistsGuard;
   let route: ActivatedRouteSnapshot;
-  let store: MockStore<BreweriesState>;
-  let getBrewerySelector: MemoizedSelector<BreweriesState, IBrewery>;
+  let store: MockStore<State>;
 
   beforeEach(() => {
-    const state = { 
-      results: null,
-      errors: null,
-      searchCriteria: null,
-      currentBrewery: null,
-      currentBreweryId: null,
-    };
-
     TestBed.configureTestingModule({
       providers: [
-        provideMockStore({initialState: state}),
+        provideMockStore({
+          initialState: {
+            breweries: {
+              current: {
+                id: null,
+                item: null, 
+                loaded: false
+              }
+            }
+          }
+        }),
         BreweryExistsGuard
       ]
     });
@@ -42,26 +45,42 @@ describe('BreweryExistsGuard', () => {
   });
 
   describe('canActivate', () => {
-    xit('when brewery is not loaded returns false', () => {
-      store.overrideSelector(getBrewerySelector, null);
+    let state: BreweriesState;
+    let current: ICurrent<IBrewery>;
+    let selector: MemoizedSelector<object, ICurrent<IBrewery>>;
 
-      const expected = cold('a|', { a: false });
-   
+    beforeEach(() => {
+      current = {id: null, item: null, loaded: false};
+      state = {
+        current: current,
+        results: null,
+        searchCriteria: null,
+        errors:{},
+      };
+
+      store.setState({breweries: state});
+      selector = store.overrideSelector(getBrewerySuccess, current);
+    });
+
+    it('when brewery is not loaded returns false', () => {
+      const expected = cold('(a|)', { a: false });
+
+      selector.setResult(current);
+
       expect(sut.canActivate(route)).toBeObservable(expected);
     });
 
-    xit('when brewery is loaded returns true', () => {
-      store.overrideSelector(getBrewerySelector, new Brewery());
- 
-      const expected = cold('a|', { a: true });
-   
+    it('when brewery is loaded returns true', () => {
+      const expected = cold('(a|)', { a: true });
+
+      current.loaded = true;
+      selector.setResult(current);
+      
       expect(sut.canActivate(route)).toBeObservable(expected);
     });
 
     xit('when there is an exception returns false', () => {
-      store.overrideSelector(getBrewerySelector, new Brewery());
-
-      const expected = cold('a#', { a: false });
+      const expected = cold('(a|)', { a: false });
    
       expect(sut.canActivate(route)).toBeObservable(expected);
     });

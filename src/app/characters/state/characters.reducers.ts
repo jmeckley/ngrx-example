@@ -1,10 +1,9 @@
 import { CharactersActions, CharactersActionTypes } from './characters.actions';
-import { IPagedResults } from '../../pagedResults';
+import { IPagedResults, ICurrent } from '../../pagedResults';
 import { ICharacter, ISearchCriteria } from './character';
 
 export interface CharactersState {
-    currentCharacterId?: number;
-    currentCharacter?: ICharacter;
+    current: ICurrent<ICharacter>;
     searchCriteria: ISearchCriteria;
     results: IPagedResults<ICharacter>;
     errors: {
@@ -13,6 +12,7 @@ export interface CharactersState {
   }
 
 const initialState: CharactersState = {
+    current: {id: null, item: null, loaded: false},
     searchCriteria: {pageIndex: 0, pageSize: 10},
     results: {
         items: [],
@@ -30,18 +30,30 @@ export function reducer(state = initialState, action: CharactersActions): Charac
         case CharactersActionTypes.ClearCurrentCharacter:
             return {
                 ...state,
-                currentCharacterId: null,
-                currentCharacter: null,
+                current: {
+                    id: null,
+                    item: null,
+                    loaded: false
+                }
             };
         case CharactersActionTypes.LoadCharacter:
             return {
                 ...state,
-                currentCharacterId: action.characterId,
+                current: {
+                    ...state.current,
+                    id: action.characterId,
+                    item: null,
+                    loaded: false
+                }
             };
         case CharactersActionTypes.LoadCharacterSuccess:
             return {
                 ...state,
-                currentCharacter: action.character,
+                current: {
+                    ...state.current,
+                    item: action.character,
+                    loaded: true
+                }
             };
         case CharactersActionTypes.LoadCharacters:
             return {

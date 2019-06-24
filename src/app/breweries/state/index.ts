@@ -14,12 +14,12 @@ const getBreweryState = createFeatureSelector<fromBrewery.BreweriesState>('brewe
 
 export const getBrewery = createSelector(
   getBreweryState,
-  state => state.currentBreweryId
+  state => state.current.id
 );
 
 export const getBrewerySuccess = createSelector(
   getBreweryState,
-  state => state.currentBrewery
+  state => state.current
 );
 
 export const getBreweryError = createSelector(

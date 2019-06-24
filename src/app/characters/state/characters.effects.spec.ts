@@ -23,6 +23,7 @@ describe('CharactersEffects', () => {
     service = jasmine.createSpyObj<CharactersService>(['query', 'get']);
     router = jasmine.createSpyObj<Router>(['navigate']);
     state = {
+      current:{id: null, item: null, loaded: false},
       searchCriteria: null,
       results: null,
       errors: null
@@ -96,18 +97,18 @@ describe('CharactersEffects', () => {
   describe(`getCharacter`, () => {
 
     beforeEach(() => {
-      state.currentCharacterId = 1;
+      state.current.id = 1;
     });
     
     describe(`Success`, () => {
         it('should return character', () => {
-            state.currentCharacter = {id:1, name: 'name'};
+            state.current.item = {id:1, name: 'name'};
 
-            const action = new CharacterActions.LoadCharacter(state.currentCharacterId);
-            const completion = new CharacterActions.LoadCharacterSuccess(state.currentCharacter);
+            const action = new CharacterActions.LoadCharacter(state.current.id);
+            const completion = new CharacterActions.LoadCharacterSuccess(state.current.item);
 
             actions$ = of(action);
-            const response = cold('-a|', { a: state.currentCharacter });
+            const response = cold('-a|', { a: state.current.item });
             const expected = cold('-b|', { b: completion });
             service.get.and.returnValue(response);
 
@@ -119,11 +120,11 @@ describe('CharactersEffects', () => {
       xit('should return error message', () => {
           state.errors.message = 'error'
 
-          const action = new CharacterActions.LoadCharacter(state.currentCharacterId);
+          const action = new CharacterActions.LoadCharacter(state.current.id);
           const completion = new CharacterActions.LoadCharacterFail(state.errors.message);
 
           actions$ = of(action);
-          const response = cold('-a#', { a: state.currentCharacter = null });
+          const response = cold('-a#', { a: state.current.item = null });
           const expected = cold('-b|', { b: completion });
           service.get.and.returnValue(expected);
 
@@ -134,9 +135,9 @@ describe('CharactersEffects', () => {
 
   describe('Navigate to Character', () => {
     it('should navigate to the character route', () => { 
-        state.currentCharacterId = 1;
+        state.current.id = 1;
 
-        const action = new CharacterActions.NavigateToCharacterRoute(state.currentCharacterId);
+        const action = new CharacterActions.NavigateToCharacterRoute(state.current.id);
         
         actions$ = of(action);
         sut.navigateToCharacter$.subscribe();

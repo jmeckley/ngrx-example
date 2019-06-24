@@ -1,12 +1,11 @@
 import { BreweriesActions, BreweryActionTypes } from './brewery.actions';
-import { IPagedResults } from '../../pagedResults';
-import { IBrewery, ISearchCriteria } from '..';
+import { IPagedResults, ICurrent } from '../../pagedResults';
+import { IBrewery, ISearchCriteria, Brewery } from '..';
 
 export interface BreweriesState {
-    currentBreweryId?: number;
-    currentBrewery?: IBrewery;
     searchCriteria: ISearchCriteria;
     results: IPagedResults<IBrewery>;
+    current: ICurrent<Brewery>;
     errors: {
       message?: string;
     };
@@ -14,10 +13,8 @@ export interface BreweriesState {
 
 const initialState: BreweriesState = {
     searchCriteria: {pageIndex: 0, pageSize: 10},
-    results: {
-        items: [],
-        loading: false,
-    },
+    results: {items: [], loading: false},
+    current: {item: null, id: null, loaded: false},
     errors: {}
 }
 
@@ -30,18 +27,29 @@ export function reducer(state = initialState, action: BreweriesActions): Breweri
         case BreweryActionTypes.ClearCurrentBrewery:
             return {
                 ...state,
-                currentBreweryId: null,
-                currentBrewery: null,
+                current: {
+                    id: null,
+                    item: null,
+                    loaded: false
+                }
             };
         case BreweryActionTypes.LoadBrewery:
+            
             return {
                 ...state,
-                currentBreweryId: action.breweryId,
+                current: {
+                    ...state.current,
+                    id: action.breweryId
+                }
             };
         case BreweryActionTypes.LoadBrewerySuccess:
             return {
                 ...state,
-                currentBrewery: action.brewery,
+                current: {
+                    ...state.current,
+                    item: action.brewery,
+                    loaded: true
+                }
             };
         case BreweryActionTypes.LoadBreweries:
             return {

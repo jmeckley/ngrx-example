@@ -10,7 +10,7 @@ export interface RouterStateUrl {
   }
 
 export interface AppState {
-  router: fromRouter.RouterReducerState<RouterStateUrl>;
+  router?: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
 

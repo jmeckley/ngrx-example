@@ -5,38 +5,32 @@ import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { filter, take, map, catchError } from 'rxjs/operators';
 
-import { getBrewerySuccess } from './state';
-import { BreweriesState } from './state/brewery.reducers';
+import { getBrewerySuccess, State } from './state';
 import { LoadBrewery } from './state/brewery.actions';
-import { IBrewery } from '.';
 
 @Injectable()
 export class BreweryExistsGuard implements CanActivate {
     private loaded = false;
 
-    constructor(private store: Store<BreweriesState>) {
-        this.store.select(getBrewerySuccess).subscribe(brewery => this.loaded = this.exists(brewery));
+    constructor(private store: Store<State>) { 
+        this.store.select(getBrewerySuccess).subscribe(_ => this.loaded = _.loaded);
     }
 
     waitToLoad(): Observable<boolean> {
         return this.store.pipe(
             select(getBrewerySuccess),
-            filter(brewery => this.exists(brewery)),
+            map(current => current.loaded), 
+            filter(loaded => loaded),
             take(1),
-            map(brewery => true), 
-            catchError(err=> of(false))
+            catchError(err => of(false))
         );
     }
 
-    canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-        if (this.loaded) return of(true);
-
+    canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
+        if (this.loaded) return true;
+        
         this.store.dispatch(new LoadBrewery(route.params.id));
 
         return this.waitToLoad();
-    }
-
-    private exists(brewery: IBrewery): boolean {
-        return brewery !== null || brewery !== undefined;
     }
 }

@@ -3,40 +3,34 @@ import { CanActivate, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 import { Store, select } from '@ngrx/store';
-import { ICharacter } from './state/character';
 import { filter, take, map, catchError } from 'rxjs/operators';
-import { LoadCharacter } from './state/characters.actions';
 
-import { CharactersState } from './state/characters.reducers';
-import { getCharacterSuccess } from './state';
+import { LoadCharacter } from './state/characters.actions';
+import { getCharacterSuccess, State } from './state';
 
 @Injectable()
 export class CharacterExistsGuard implements CanActivate {
     private loaded = false;
 
-    constructor(private store: Store<CharactersState>) {
-        this.store.select(getCharacterSuccess).subscribe(character => this.loaded = this.exists(character));
-    }
+    constructor(private store: Store<State>) {
+        this.store.select(getCharacterSuccess).subscribe(_ => this.loaded = _.loaded);
+     }
 
-    waitToLoad(): Observable<boolean> {
+     waitToLoad(): Observable<boolean> {
         return this.store.pipe(
             select(getCharacterSuccess),
-            filter(character => this.exists(character)),
+            map(_ => _.loaded), 
+            filter(loaded => loaded),
             take(1),
-            map(character => true), 
-            catchError(err=> of(false))
+            catchError(err => of(false))
         );
     }
 
-    canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-        if (this.loaded) return of(true);
-
+    canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
+        if (this.loaded) return true;
+        
         this.store.dispatch(new LoadCharacter(route.params.id));
 
         return this.waitToLoad();
-    }
-
-    private exists(character: ICharacter): boolean {
-        return character !== null || character !== undefined;
     }
 }

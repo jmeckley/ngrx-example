@@ -45,7 +45,7 @@ export class BreweryEffects {
         catchError((err) => of(new breweryActions.LoadBreweryFail(err)))
     );
 
-    @Effect( { dispatch: false })
+    @Effect({ dispatch: false })
     navigateToBrewery$ = this.actions$.pipe(
         ofType(breweryActions.BreweryActionTypes.NavigateToBreweryRoute),
         map((action: breweryActions.NavigateToBreweryRoute) => action.breweryId),

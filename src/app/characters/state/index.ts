@@ -14,12 +14,12 @@ const getCharactersState = createFeatureSelector<fromCharacters.CharactersState>
 
 export const getCharacter = createSelector(
   getCharactersState,
-  state => state.currentCharacterId
+  state => state.current.id
 );
 
 export const getCharacterSuccess = createSelector(
   getCharactersState,
-  state => state.currentCharacter
+  state => state.current
 );
 
 export const getCharacterError = createSelector(

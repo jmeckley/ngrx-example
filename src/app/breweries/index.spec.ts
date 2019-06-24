@@ -9,8 +9,7 @@ describe(`brewerySelectors`, () => {
     defaultState = {
       router: null,
       breweries: {
-        currentBreweryId: 100,
-        currentBrewery: new Brewery(),
+        current:{id: 100, item: new Brewery(), loaded: true},
         searchCriteria: {pageIndex: 0, pageSize: 10},
         results: {items:[new Brewery(), new Brewery()], loading: false},
         errors: {}
@@ -39,7 +38,7 @@ describe(`brewerySelectors`, () => {
   describe('Get Brewery', () => {
     it('should have search criteria defined', () => {
       const result = fromBreweries.getBrewery(defaultState);
-      expect(result).toBe(defaultState.breweries.currentBreweryId);
+      expect(result).toBe(defaultState.breweries.current.id);
     });
 
     it('error should not have errors', () => {
@@ -49,7 +48,7 @@ describe(`brewerySelectors`, () => {
 
     it('success should have two breweries', () => {
       const result = fromBreweries.getBrewerySuccess(defaultState);
-      expect(result).toBe(defaultState.breweries.currentBrewery);
+      expect(result).toBe(defaultState.breweries.current);
     });
   });
 

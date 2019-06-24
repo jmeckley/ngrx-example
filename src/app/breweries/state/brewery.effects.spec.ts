@@ -23,6 +23,7 @@ describe('BreweriesEffects', () => {
     service = jasmine.createSpyObj<BreweriesService>(['query', 'get']);
     router = jasmine.createSpyObj<Router>(['navigate']);
     state = {
+      current: {id: null, item: null, loaded: false},
       searchCriteria: null,
       results: null,
       errors: null
@@ -96,18 +97,18 @@ describe('BreweriesEffects', () => {
   describe(`getBrewery`, () => {
 
     beforeEach(() => {
-      state.currentBreweryId = 1;
+      state.current.id = 1;
     });
     
     describe(`Success`, () => {
         it('should return brewery', () => {
-            state.currentBrewery = new Brewery();
+            state.current.item = new Brewery();
 
-            const action = new BreweryActions.LoadBrewery(state.currentBreweryId);
-            const completion = new BreweryActions.LoadBrewerySuccess(state.currentBrewery);
+            const action = new BreweryActions.LoadBrewery(state.current.id);
+            const completion = new BreweryActions.LoadBrewerySuccess(state.current.item);
 
             actions$ = of(action);
-            const response = cold('-a|', { a: state.currentBrewery });
+            const response = cold('-a|', { a: state.current.item });
             const expected = cold('-b|', { b: completion });
             service.get.and.returnValue(response);
 
@@ -119,11 +120,11 @@ describe('BreweriesEffects', () => {
       xit('should return error message', () => {
           state.errors.message = 'error'
 
-          const action = new BreweryActions.LoadBrewery(state.currentBreweryId);
+          const action = new BreweryActions.LoadBrewery(state.current.id);
           const completion = new BreweryActions.LoadBreweryFail(state.errors.message);
 
           actions$ = of(action);
-          const response = cold('-a#', { a: state.currentBrewery = null });
+          const response = cold('-a#', { a: state.current.item = null });
           const expected = cold('-b|', { b: completion });
           service.get.and.returnValue(expected);
 
@@ -134,9 +135,9 @@ describe('BreweriesEffects', () => {
 
   describe('Navigate to Brewery', () => {
     it('should navigate to the brewery route', () => { 
-        state.currentBreweryId = 1;
+        state.current.id = 1;
 
-        const action = new BreweryActions.NavigateToBreweryRoute(state.currentBreweryId);
+        const action = new BreweryActions.NavigateToBreweryRoute(state.current.id);
         
         actions$ = of(action);
         sut.navigateToBrewery$.subscribe();

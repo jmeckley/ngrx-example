@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
 import * as fromBreweries from '../state';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-brewery-shell',
@@ -19,7 +20,7 @@ export class BreweryShellComponent implements OnInit {
   constructor(private store: Store<fromBreweries.State>) {}
 
   ngOnInit() {
-    this.brewery$ = this.store.pipe(select(fromBreweries.getBrewerySuccess));
+    this.brewery$ = this.store.pipe(select(fromBreweries.getBrewerySuccess)).pipe(map(_ => _.item));
     this.errorMessage$ = this.store.pipe(select(fromBreweries.getBreweryError));
   }
 

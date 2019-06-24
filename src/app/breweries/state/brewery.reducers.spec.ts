@@ -9,6 +9,7 @@ describe('Brewery reducer', () => {
 
   beforeEach(() => {
     state = {
+      current:{id:null, item: null, loaded: false},
       errors: {},
       searchCriteria: {pageIndex: 0, pageSize: 10},
       results: {items: [], loading: false}
@@ -76,7 +77,10 @@ describe('Brewery reducer', () => {
   
       const expected: BreweriesState = {
           ...state,
-          currentBreweryId: id,
+          current: {
+            ...state.current,
+            id: id
+          }
       };
   
       const result = reducer(state, new LoadBrewery(id));
@@ -91,7 +95,11 @@ describe('Brewery reducer', () => {
       
       const expected: BreweriesState = {
           ...state,
-          currentBrewery: brewery
+          current: {
+            ...state.current,
+            item: brewery,
+            loaded: true
+          }
       };
 
       const result = reducer(state, new LoadBrewerySuccess(brewery));
@@ -115,13 +123,13 @@ describe('Brewery reducer', () => {
 
   describe('clear brewery', () => {
     it('should set brewery and brewery id to null', () => {
-      state.currentBrewery = new Brewery();
-      state.currentBreweryId = 1;
+      state.current.item = new Brewery();
+      state.current.id = 1;
+      state.current.loaded = true;
       
       const expected: BreweriesState = {
           ...state,
-          currentBrewery: null,
-          currentBreweryId: null
+          current:{id: null, item: null, loaded: false}
       };
 
       const result = reducer(state, new ClearCurrentBrewery());

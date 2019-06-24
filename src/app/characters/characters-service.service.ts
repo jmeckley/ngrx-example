@@ -47,7 +47,7 @@ export class CharactersService {
       id: character.id,
       name: character.name,
       description: character.description,
-      imageUrl: `${thumbnail.path}.${thumbnail.extension}`
+      imageUrl: thumbnail ? `${thumbnail.path}.${thumbnail.extension}` : null
     };
   }
 }
