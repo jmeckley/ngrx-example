@@ -7,8 +7,11 @@ import { CharacterExistsGuard } from './character-exists.guard';
 const routes: Routes = [
   {
     path:  'characters',
-    component: CharactersShellComponent,
     children: [
+      { 
+        path: '', 
+        component: CharactersShellComponent
+      },
       { 
         path: ':id', 
         component: CharacterShellComponent, 

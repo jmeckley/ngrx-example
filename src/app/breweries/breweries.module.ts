@@ -10,6 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
 import { BreweryEffects } from './state/brewery.effects';
 import { reducer } from './state/brewery.reducers';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { reducer } from './state/brewery.reducers';
   imports: [
     CommonModule,
     NgbModule,
+    RouterModule,
     StoreModule.forFeature('breweries', reducer),
     EffectsModule.forFeature([BreweryEffects]),
     HttpClientModule

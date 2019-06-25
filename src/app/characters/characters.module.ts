@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CharactersComponent } from './characters/characters.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CharacterComponent } from './character/character.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CharacterComponent } from './character/character.component';
   imports: [
     CommonModule,
     NgbModule,
+    RouterModule,
     StoreModule.forFeature('characters', reducer),
     EffectsModule.forFeature([CharactersEffects]),
     HttpClientModule
