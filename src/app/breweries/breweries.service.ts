@@ -21,7 +21,7 @@ export class BreweriesService {
         loading: false,
         pageIndex: criteria.pageIndex,
         pageSize: criteria.pageSize,
-        totalItems: 100
+        totalItems: 8030
       };
     }));
   }
