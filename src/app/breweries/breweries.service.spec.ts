@@ -35,7 +35,7 @@ describe('BreweriesService', () => {
       loading: false,
       pageIndex: 0,
       pageSize: 10,
-      totalItems: 100
+      totalItems: 8030
     }
 
     sut.query({pageIndex: 0, pageSize:10}).subscribe(result => expect(result).toEqual(expected));

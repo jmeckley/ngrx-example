@@ -20,7 +20,7 @@ export class BreweryShellComponent implements OnInit {
   constructor(private store: Store<fromBreweries.State>) {}
 
   ngOnInit() {
-    this.brewery$ = this.store.pipe(select(fromBreweries.getBrewerySuccess)).pipe(map(_ => _.item));
+    this.brewery$ = this.store.pipe(select(fromBreweries.getBrewerySuccess), map(_ => _.item));
     this.errorMessage$ = this.store.pipe(select(fromBreweries.getBreweryError));
   }
 
