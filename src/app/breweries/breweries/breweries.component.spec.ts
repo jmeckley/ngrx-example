@@ -1,36 +1,51 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { StoreModule } from '@ngrx/store';
-import { reducer } from '../state/brewery.reducers';
-import { BreweriesShellComponent } from '../breweries-shell/breweries-shell.component';
+
+import { IBrewery, Brewery } from '..';
 import { BreweriesComponent } from './breweries.component';
 
-describe('BreweriesShellComponent', () => {
-  let component: BreweriesShellComponent;
-  let fixture: ComponentFixture<BreweriesShellComponent>;
+describe('BreweriesComponent', () => {
+  let component: BreweriesComponent;
+  let fixture: ComponentFixture<BreweriesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [ 
-            BreweriesShellComponent,
-            BreweriesComponent,
-        ],
-        imports: [
-          NgbModule,
-          StoreModule.forRoot({}),
-          StoreModule.forFeature('breweries', reducer)
-        ]
+      declarations: [ BreweriesComponent ],
+      imports: [ NgbModule ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BreweriesShellComponent);
+    fixture = TestBed.createComponent(BreweriesComponent);
+    
     component = fixture.componentInstance;
+    component.criteria = {pageIndex: 0, pageSize: 10};
+    component.ngOnInit();
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('changePage', () => {
+    it('should emit new search criteria', fakeAsync(() => {
+      component.pageChanged.subscribe(actual => expect(actual).toEqual({pageIndex: 1, pageSize: 10}));
+      
+      component.changePage(2);
+    }));
+  });
+
+  describe('view', () =>{
+    it('should emit brewery', fakeAsync(() => {
+      let brewery: IBrewery = new Brewery();
+
+      component.viewBrewery.subscribe(actual => expect(actual).toEqual(brewery));
+      
+      component.view(brewery);
+    }));
   });
 });
