@@ -7,8 +7,11 @@ import { BreweryExistsGuard } from './brewery-exists.guard';
 const routes: Routes = [
   {
     path:  'breweries',
-    component: BreweriesShellComponent,
     children: [
+      { 
+        path: '', 
+        component: BreweriesShellComponent, 
+      },
       { 
         path: ':id', 
         component: BreweryShellComponent, 
